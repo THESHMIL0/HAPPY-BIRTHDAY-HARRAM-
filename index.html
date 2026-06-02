@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Harram! 🐾</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            color: #4a4a4a;
+        }
+
+        /* Floating Cats Background */
+        .cat-stream {
+            position: fixed;
+            top: -50px;
+            font-size: 24px;
+            animation: fall linear infinite;
+            z-index: 0;
+            user-select: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+
+        /* Main Container */
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            z-index: 10;
+            transition: transform 0.3s ease;
+            border: 3px solid #ffb3c6;
+        }
+
+        h1 {
+            color: #ff4d6d;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Card Mechanism */
+        .card-inside {
+            display: none;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .cat-gif {
+            width: 80%;
+            max-width: 250px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border: 3px solid #ffccd5;
+        }
+
+        .btn {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+            transition: 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #ff758f;
+            transform: scale(1.05);
+        }
+
+        /* Countdown Style */
+        #countdown {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff758f;
+            background: #fff0f3;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainCard">
+        <div id="closedView">
+            <h1>A Special Surprise is Waiting... 🐾</h1>
+            <p>Something cute is happening soon! Hang tight until Harram's birthday begins!</p>
+            <div id="countdown">Loading countdown...</div>
+        </div>
+
+        <div id="openView" style="display: none;">
+            <h1>Happy Birthday, Harram! 🥳🎉</h1>
+            <p>Sending you endless purrs, cuddles, and love on your special day! 🐱✨</p>
+            
+            <button class="btn" id="openBtn" onclick="revealCard()">Click to Open Your Card! 💌</button>
+
+            <div class="card-inside" id="cardInside">
+                <img class="cat-gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmszd3M0NTN3Znd4Nm91Mm9kNXBlcmM3bDJ6cHd0cm9ubm95ZXF6diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/Om3798pA9K6uC8U59T/giphy.gif" alt="Cute Cat">
+                <p style="font-style: italic; color: #ff4d6d; font-weight: bold;">
+                    "May your day be filled with lots of joy, treats, and plenty of kitty naps!"
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set target to June 3rd, 2026 at 00:00:00 Local Time
+        const targetDate = new Date("June 3, 2026 00:00:00").getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            // Calculate Time
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            // Display Countdown
+            document.getElementById("countdown").innerHTML = 
+                `Unlocks in: ${hours}h ${minutes}m ${seconds}s ⏰`;
+
+            // If midnight hits, unlock the birthday screen
+            if (difference <= 0) {
+                clearInterval(timer);
+                document.getElementById("closedView").style.display = "none";
+                document.getElementById("openView").style.display = "block";
+                startCatRain(); // Start the falling cat emojis!
+            }
+        }, 1000);
+
+        // Function to handle card click
+        function revealCard() {
+            document.getElementById("openBtn").style.display = "none";
+            document.getElementById("cardInside").style.display = "block";
+        }
+
+        // Falling Cat Emojis Generator
+        function startCatRain() {
+            const catEmojis = ['🐱', '🐈', '🐾', '😻', '😸', '💖', '🎂'];
+            setInterval(() => {
+                const cat = document.createElement('div');
+                cat.classList.add('cat-stream');
+                cat.innerText = catEmojis[Math.floor(Math.random() * catEmojis.length)];
+                cat.style.left = Math.random() * 100 + 'vw';
+                cat.style.animationDuration = Math.random() * 2 + 3 + 's'; // Between 3-5 seconds
+                document.body.appendChild(cat);
+
+                // Clear memory
+                setTimeout(() => {
+                    cat.remove();
+                }, 5000);
+            }, 300);
+        }
+
+        // TESTING BYPASS: If you want to check the layout right now without waiting till midnight, 
+        // uncomment the two lines below to force open it!
+        // document.getElementById("closedView").style.display = "none";
+        // document.getElementById("openView").style.display = "block"; startCatRain();
+    </script>
+</body>
+</html>
