@@ -71,12 +71,13 @@
             animation: fadeIn 1s ease forwards;
         }
 
-        .cat-gif {
-            width: 80%;
-            max-width: 250px;
+        .cat-pic {
+            width: 100%;
+            max-width: 350px;
             border-radius: 15px;
             margin: 15px 0;
             border: 3px solid #ffccd5;
+            object-fit: cover;
         }
 
         .btn {
@@ -118,12 +119,14 @@
 <body>
 
     <div class="container" id="mainCard">
+        <!-- Before Midnight / Sealed Card View -->
         <div id="closedView">
             <h1>A Special Surprise is Waiting... 🐾</h1>
             <p>Something cute is happening soon! Hang tight until Harram's birthday begins!</p>
             <div id="countdown">Loading countdown...</div>
         </div>
 
+        <!-- After Midnight / Interactive Birthday View -->
         <div id="openView" style="display: none;">
             <h1>Happy Birthday, Harram! 🥳🎉</h1>
             <p>Sending you endless purrs, cuddles, and love on your special day! 🐱✨</p>
@@ -131,9 +134,14 @@
             <button class="btn" id="openBtn" onclick="revealCard()">Click to Open Your Card! 💌</button>
 
             <div class="card-inside" id="cardInside">
-                <img class="cat-gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmszd3M0NTN3Znd4Nm91Mm9kNXBlcmM3bDJ6cHd0cm9ubm95ZXF6diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/Om3798pA9K6uC8U59T/giphy.gif" alt="Cute Cat">
-                <p style="font-style: italic; color: #ff4d6d; font-weight: bold;">
-                    "May your day be filled with lots of joy, treats, and plenty of kitty naps!"
+                <!-- User's Cat Photo (referenced from your upload) -->
+                <img class="cat-pic" src="1.jpg" alt="Cute Cat">
+                
+                <p style="font-weight: bold; color: #ff4d6d; margin-top: 15px;">
+                    "it's me Kushu happy birthday. Your 18 now 😼✨"
+                </p>
+                <p style="font-style: italic; color: #666; font-size: 1rem;">
+                    May your day be filled with lots of joy, treats, and plenty of kitty naps!
                 </p>
             </div>
         </div>
