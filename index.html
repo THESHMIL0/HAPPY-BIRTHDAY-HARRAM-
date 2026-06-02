@@ -49,7 +49,7 @@
             max-width: 450px;
             width: 90%;
             z-index: 10;
-            transition: transform 0.3s ease;
+            transition: all 0.4s ease;
             border: 3px solid #ffb3c6;
         }
 
@@ -59,16 +59,35 @@
             margin-bottom: 10px;
         }
 
+        h2 {
+            color: #ff758f;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
         p {
             font-size: 1.1rem;
             color: #666;
             margin-bottom: 20px;
         }
 
+        /* Quiz Styling */
+        .quiz-container {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
         /* Card Mechanism */
         .card-inside {
             display: none;
-            animation: fadeIn 1s ease forwards;
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         .cat-pic {
@@ -98,6 +117,23 @@
             transform: scale(1.05);
         }
 
+        .option-btn {
+            background-color: #fff0f3;
+            color: #ff4d6d;
+            border: 2px solid #ffccd5;
+            padding: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .option-btn:hover {
+            background-color: #ffccd5;
+            color: white;
+        }
+
         /* Countdown Style */
         #countdown {
             font-size: 1.5rem;
@@ -111,7 +147,12 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.6); }
             to { opacity: 1; transform: scale(1); }
         }
     </style>
@@ -119,31 +160,48 @@
 <body>
 
     <div class="container" id="mainCard">
-        <!-- Before Midnight / Sealed Card View -->
         <div id="closedView">
             <h1>A Special Surprise is Waiting... 🐾</h1>
             <p>Something cute is happening soon! Hang tight until Harram's birthday begins!</p>
             <div id="countdown">Loading countdown...</div>
         </div>
 
-        <!-- After Midnight / Interactive Birthday View -->
         <div id="openView" style="display: none;">
             <h1>Happy Birthday, Harram! 🥳🎉</h1>
             <p>Sending you endless purrs, cuddles, and love on your special day! 🐱✨</p>
-            
-            <button class="btn" id="openBtn" onclick="revealCard()">Click to Open Your Card! 💌</button>
+            <button class="btn" id="openBtn" onclick="startQuiz()">Click to Open Your Card! 💌</button>
+        </div>
 
-            <div class="card-inside" id="cardInside">
-                <!-- User's Cat Photo (referenced from your upload) -->
-                <img class="cat-pic" src="1.jpg" alt="Cute Cat">
-                
-                <p style="font-weight: bold; color: #ff4d6d; margin-top: 15px;">
-                    "it's me Kushu happy birthday. Your 18 now 😼✨"
-                </p>
-                <p style="font-style: italic; color: #666; font-size: 1rem;">
-                    May your day be filled with lots of joy, treats, and plenty of kitty naps!
-                </p>
+        <div class="quiz-container" id="quizStep1">
+            <h2>Question 1 🐾</h2>
+            <p>Can you guess who crawled through the code to wish you a happy birthday?</p>
+            <div class="quiz-options">
+                <button class="option-btn" onclick="wrongAnswer('Nope! Try again, I have paws! 🐾')">A random online internet cat</button>
+                <button class="option-btn" onclick="wrongAnswer('Wrong! Think more regal and handsome. 😼')">The neighbor's cat</button>
+                <button class="option-btn" onclick="nextStep(1, 2)">Your favorite gray tabby, Kushu! 🐈‍⬛</button>
             </div>
+        </div>
+
+        <div class="quiz-container" id="quizStep2">
+            <h2>Question 2 🎂</h2>
+            <p>Wait, a very important milestone check! Exactly how old are you turning today?</p>
+            <div class="quiz-options">
+                <button class="option-btn" onclick="wrongAnswer('Still acting like it maybe, but try again! 👶')">Sweet 16</button>
+                <button class="option-btn" onclick="revealSurprise()">Level 18! Official Adult Mode 😼✨</button>
+                <button class="option-btn" onclick="wrongAnswer('Not that old yet! Go back! 😂')">21 years old</button>
+            </div>
+        </div>
+
+        <div class="card-inside" id="cardInside">
+            <h1>SURPRISE! 🎉🥳</h1>
+            <img class="cat-pic" src="1.jpg" alt="Kushu Surprise">
+            
+            <h2 style="color: #ff4d6d; margin-top: 15px;">
+                "it's me Kushu happy birthday. Your 18 now 😼✨"
+            </h2>
+            <p style="font-style: italic; color: #666; font-size: 1rem; margin-top: 10px;">
+                May your day be filled with lots of joy, treats, and plenty of kitty naps!
+            </p>
         </div>
     </div>
 
@@ -158,25 +216,20 @@
         // Target countdown to June 3rd, 2026 at 00:00:00 Local Time
         const targetDate = new Date("June 3, 2026 00:00:00").getTime();
 
-        // Check if the secret word is exactly "cat"
         if (secretWord === "cat") {
             unlockWebsite();
         } else {
-            // Normal Mode: Run the countdown
             const timer = setInterval(function() {
                 const now = new Date().getTime();
                 const difference = targetDate - now;
 
-                // Calculate Time Remaining
                 const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-                // Display Countdown Text
                 document.getElementById("countdown").innerHTML = 
                     `Unlocks in: ${hours}h ${minutes}m ${seconds}s ⏰`;
 
-                // If midnight hits, automatically open up the layout
                 if (difference <= 0) {
                     clearInterval(timer);
                     unlockWebsite();
@@ -184,35 +237,47 @@
             }, 1000);
         }
 
-        // Function to unlock the birthday view
         function unlockWebsite() {
             document.getElementById("closedView").style.display = "none";
             document.getElementById("openView").style.display = "block";
-            startCatRain();
         }
 
-        // Function to handle card click
-        function revealCard() {
-            document.getElementById("openBtn").style.display = "none";
+        // Quiz Flow Functions
+        function startQuiz() {
+            document.getElementById("openView").style.display = "none";
+            document.getElementById("quizStep1").style.display = "block";
+        }
+
+        function wrongAnswer(message) {
+            alert(message);
+        }
+
+        function nextStep(current, next) {
+            document.getElementById(`quizStep${current}`).style.display = "none";
+            document.getElementById(`quizStep${next}`).style.display = "block";
+        }
+
+        function revealSurprise() {
+            document.getElementById("quizStep2").style.display = "none";
             document.getElementById("cardInside").style.display = "block";
+            startCatRain(); // The cats only start falling when the surprise is revealed!
         }
 
         // Falling Cat Emojis Background Animation
         function startCatRain() {
-            const catEmojis = ['🐱', '🐈', '🐾', '😻', '😸', '💖', '🎂'];
+            const catEmojis = ['🐱', '🐈', '🐾', '😻', '😸', '💖', '🎂', '✨'];
             setInterval(() => {
                 const cat = document.createElement('div');
                 cat.classList.add('cat-stream');
                 cat.innerText = catEmojis[Math.floor(Math.random() * catEmojis.length)];
                 cat.style.left = Math.random() * 100 + 'vw';
-                cat.style.animationDuration = Math.random() * 2 + 3 + 's'; // Varies speed between 3-5s
+                cat.style.animationDuration = Math.random() * 2 + 3 + 's';
                 document.body.appendChild(cat);
 
-                // Remove element after it falls to save performance
                 setTimeout(() => {
                     cat.remove();
                 }, 5000);
-            }, 300);
+            }, 250); // Slightly faster rain for the celebration!
         }
     </script>
 </body>
