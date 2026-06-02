@@ -51,6 +51,7 @@
             z-index: 10;
             transition: all 0.4s ease;
             border: 3px solid #ffb3c6;
+            position: relative;
         }
 
         h1 {
@@ -82,6 +83,37 @@
             flex-direction: column;
             gap: 10px;
             margin-top: 15px;
+        }
+
+        .option-btn {
+            background-color: #fff0f3;
+            color: #ff4d6d;
+            border: 2px solid #ffccd5;
+            padding: 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .option-btn:hover {
+            background-color: #ffccd5;
+            color: white;
+        }
+
+        /* Cute Custom Error Message */
+        .error-message {
+            display: none;
+            background-color: #ffe5ec;
+            color: #ff4d6d;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            border: 1px dashed #ff758f;
+            animation: shake 0.4s ease;
         }
 
         /* Card Mechanism */
@@ -117,23 +149,6 @@
             transform: scale(1.05);
         }
 
-        .option-btn {
-            background-color: #fff0f3;
-            color: #ff4d6d;
-            border: 2px solid #ffccd5;
-            padding: 10px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-
-        .option-btn:hover {
-            background-color: #ffccd5;
-            color: white;
-        }
-
         /* Countdown Style */
         #countdown {
             font-size: 1.5rem;
@@ -146,6 +161,7 @@
             margin-top: 10px;
         }
 
+        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -154,6 +170,12 @@
         @keyframes popIn {
             from { opacity: 0; transform: scale(0.6); }
             to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
         }
     </style>
 </head>
@@ -173,23 +195,36 @@
         </div>
 
         <div class="quiz-container" id="quizStep1">
-            <h2>Question 1 🐾</h2>
-            <p>Can you guess who crawled through the code to wish you a happy birthday?</p>
+            <h2>Question 1 👑</h2>
+            <p>Who is the ultimate cat's mother? 🤔</p>
             <div class="quiz-options">
-                <button class="option-btn" onclick="wrongAnswer('Nope! Try again, I have paws! 🐾')">A random online internet cat</button>
-                <button class="option-btn" onclick="wrongAnswer('Wrong! Think more regal and handsome. 😼')">The neighbor's cat</button>
-                <button class="option-btn" onclick="nextStep(1, 2)">Your favorite gray tabby, Kushu! 🐈‍⬛</button>
+                <button class="option-btn" onclick="wrongAnswer(1, 'No way! Try again! ❌')">Some random person</button>
+                <button class="option-btn" onclick="nextStep(1, 2)">Harram 🗽✨</button>
+                <button class="option-btn" onclick="wrongAnswer(1, 'Wrong! Think of the birthday girl! 😼')">An actual queen cat</button>
             </div>
+            <div class="error-message" id="error1"></div>
         </div>
 
         <div class="quiz-container" id="quizStep2">
-            <h2>Question 2 🎂</h2>
-            <p>Wait, a very important milestone check! Exactly how old are you turning today?</p>
+            <h2>Question 2 🐈‍⬛</h2>
+            <p>What is a group of adult cats officially called?</p>
             <div class="quiz-options">
-                <button class="option-btn" onclick="wrongAnswer('Still acting like it maybe, but try again! 👶')">Sweet 16</button>
-                <button class="option-btn" onclick="revealSurprise()">Level 18! Official Adult Mode 😼✨</button>
-                <button class="option-btn" onclick="wrongAnswer('Not that old yet! Go back! 😂')">21 years old</button>
+                <button class="option-btn" onclick="wrongAnswer(2, 'Sounds cute, but that\'s only for baby kittens! 🍼')">A kindle</button>
+                <button class="option-btn" onclick="wrongAnswer(2, 'Not quite! That sounds a bit too loud. 📣')">A chatter</button>
+                <button class="option-btn" onclick="nextStep(2, 3)">A clowder 🐾</button>
             </div>
+            <div class="error-message" id="error2"></div>
+        </div>
+
+        <div class="quiz-container" id="quizStep3">
+            <h2>Question 3 🤫</h2>
+            <p>Final question! Who crawled through the code to wish you a happy birthday?</p>
+            <div class="quiz-options">
+                <button class="option-btn" onclick="wrongAnswer(3, 'Wrong! Think way more handsome and majestic. 😼')">The neighbor\'s cat</button>
+                <button class="option-btn" onclick="revealSurprise()">Your favorite gray tabby, Kushu! 🐈‍⬛❤️</button>
+                <button class="option-btn" onclick="wrongAnswer(3, 'No way, this cat specifically loves you! 🐾')">A random internet cat</button>
+            </div>
+            <div class="error-message" id="error3"></div>
         </div>
 
         <div class="card-inside" id="cardInside">
@@ -248,8 +283,15 @@
             document.getElementById("quizStep1").style.display = "block";
         }
 
-        function wrongAnswer(message) {
-            alert(message);
+        function wrongAnswer(step, message) {
+            const errorBox = document.getElementById(`error${step}`);
+            errorBox.innerText = message;
+            errorBox.style.display = "block";
+            
+            // Re-trigger shake animation if clicked again
+            errorBox.style.animation = 'none';
+            errorBox.offsetHeight; /* trigger reflow */
+            errorBox.style.animation = null; 
         }
 
         function nextStep(current, next) {
@@ -258,9 +300,9 @@
         }
 
         function revealSurprise() {
-            document.getElementById("quizStep2").style.display = "none";
+            document.getElementById("quizStep3").style.display = "none";
             document.getElementById("cardInside").style.display = "block";
-            startCatRain(); // The cats only start falling when the surprise is revealed!
+            startCatRain(); 
         }
 
         // Falling Cat Emojis Background Animation
@@ -277,7 +319,7 @@
                 setTimeout(() => {
                     cat.remove();
                 }, 5000);
-            }, 250); // Slightly faster rain for the celebration!
+            }, 250); 
         }
     </script>
 </body>
