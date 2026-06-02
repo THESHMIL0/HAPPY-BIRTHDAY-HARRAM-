@@ -140,30 +140,48 @@
     </div>
 
     <script>
-        // Set target to June 3rd, 2026 at 00:00:00 Local Time
+        // ==========================================
+        // 🛠️ TESTING TOGGLE SWITCH:
+        // Set to "cat" to unlock instantly and test your changes. 
+        // Set to "" (empty) to lock it back to the midnight timer.
+        // ==========================================
+        const secretWord = "cat"; 
+
+        // Target countdown to June 3rd, 2026 at 00:00:00 Local Time
         const targetDate = new Date("June 3, 2026 00:00:00").getTime();
 
-        const timer = setInterval(function() {
-            const now = new Date().getTime();
-            const difference = targetDate - now;
+        // Check if the secret word is exactly "cat"
+        if (secretWord === "cat") {
+            unlockWebsite();
+        } else {
+            // Normal Mode: Run the countdown
+            const timer = setInterval(function() {
+                const now = new Date().getTime();
+                const difference = targetDate - now;
 
-            // Calculate Time
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                // Calculate Time Remaining
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-            // Display Countdown
-            document.getElementById("countdown").innerHTML = 
-                `Unlocks in: ${hours}h ${minutes}m ${seconds}s ⏰`;
+                // Display Countdown Text
+                document.getElementById("countdown").innerHTML = 
+                    `Unlocks in: ${hours}h ${minutes}m ${seconds}s ⏰`;
 
-            // If midnight hits, unlock the birthday screen
-            if (difference <= 0) {
-                clearInterval(timer);
-                document.getElementById("closedView").style.display = "none";
-                document.getElementById("openView").style.display = "block";
-                startCatRain(); // Start the falling cat emojis!
-            }
-        }, 1000);
+                // If midnight hits, automatically open up the layout
+                if (difference <= 0) {
+                    clearInterval(timer);
+                    unlockWebsite();
+                }
+            }, 1000);
+        }
+
+        // Function to unlock the birthday view
+        function unlockWebsite() {
+            document.getElementById("closedView").style.display = "none";
+            document.getElementById("openView").style.display = "block";
+            startCatRain();
+        }
 
         // Function to handle card click
         function revealCard() {
@@ -171,7 +189,7 @@
             document.getElementById("cardInside").style.display = "block";
         }
 
-        // Falling Cat Emojis Generator
+        // Falling Cat Emojis Background Animation
         function startCatRain() {
             const catEmojis = ['🐱', '🐈', '🐾', '😻', '😸', '💖', '🎂'];
             setInterval(() => {
@@ -179,20 +197,15 @@
                 cat.classList.add('cat-stream');
                 cat.innerText = catEmojis[Math.floor(Math.random() * catEmojis.length)];
                 cat.style.left = Math.random() * 100 + 'vw';
-                cat.style.animationDuration = Math.random() * 2 + 3 + 's'; // Between 3-5 seconds
+                cat.style.animationDuration = Math.random() * 2 + 3 + 's'; // Varies speed between 3-5s
                 document.body.appendChild(cat);
 
-                // Clear memory
+                // Remove element after it falls to save performance
                 setTimeout(() => {
                     cat.remove();
                 }, 5000);
             }, 300);
         }
-
-        // TESTING BYPASS: If you want to check the layout right now without waiting till midnight, 
-        // uncomment the two lines below to force open it!
-        // document.getElementById("closedView").style.display = "none";
-        // document.getElementById("openView").style.display = "block"; startCatRain();
     </script>
 </body>
 </html>
