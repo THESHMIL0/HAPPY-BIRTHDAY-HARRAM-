@@ -181,19 +181,25 @@
 </head>
 <body>
 
+    <!-- Hidden Background Audio Player -->
+    <audio id="bgMusic" src="2.mp3" loop></audio>
+
     <div class="container" id="mainCard">
+        <!-- Before Midnight / Sealed Card View -->
         <div id="closedView">
             <h1>A Special Surprise is Waiting... 🐾</h1>
             <p>Something cute is happening soon! Hang tight until Harram's birthday begins!</p>
             <div id="countdown">Loading countdown...</div>
         </div>
 
+        <!-- After Midnight / Main Entrance View -->
         <div id="openView" style="display: none;">
             <h1>Happy Birthday, Harram! 🥳🎉</h1>
             <p>Sending you endless purrs, cuddles, and love on your special day! 🐱✨</p>
             <button class="btn" id="openBtn" onclick="startQuiz()">Click to Open Your Card! 💌</button>
         </div>
 
+        <!-- STEP 1: WHO IS CAT'S MOTHER -->
         <div class="quiz-container" id="quizStep1">
             <h2>Question 1 👑</h2>
             <p>Who is the ultimate cat's mother? 🤔</p>
@@ -205,6 +211,7 @@
             <div class="error-message" id="error1"></div>
         </div>
 
+        <!-- STEP 2: GROUP OF CATS TRIVIA -->
         <div class="quiz-container" id="quizStep2">
             <h2>Question 2 🐈‍⬛</h2>
             <p>What is a group of adult cats officially called?</p>
@@ -216,6 +223,7 @@
             <div class="error-message" id="error2"></div>
         </div>
 
+        <!-- STEP 3: GUESS WHO QUESTION -->
         <div class="quiz-container" id="quizStep3">
             <h2>Question 3 🤫</h2>
             <p>Final question! Who crawled through the code to wish you a happy birthday?</p>
@@ -227,8 +235,10 @@
             <div class="error-message" id="error3"></div>
         </div>
 
+        <!-- FINAL SURPRISE REVEAL -->
         <div class="card-inside" id="cardInside">
             <h1>SURPRISE! 🎉🥳</h1>
+            <!-- Your uploaded cat photo named 1.jpg -->
             <img class="cat-pic" src="1.jpg" alt="Kushu Surprise">
             
             <h2 style="color: #ff4d6d; margin-top: 15px;">
@@ -279,6 +289,12 @@
 
         // Quiz Flow Functions
         function startQuiz() {
+            // Play the background song file (2.mp3) immediately when she interacts
+            const music = document.getElementById("bgMusic");
+            music.play().catch(error => {
+                console.log("Audio playback delayed or blocked by browser settings:", error);
+            });
+
             document.getElementById("openView").style.display = "none";
             document.getElementById("quizStep1").style.display = "block";
         }
@@ -323,4 +339,5 @@
         }
     </script>
 </body>
-</html>
+    </html>
+                
